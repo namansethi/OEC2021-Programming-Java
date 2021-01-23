@@ -1,6 +1,13 @@
 #Got to Read an Excel file
 import pandas as pd
-import openpyxl
 
-dataframe = pd.read_excel('../Resources/OEC2021_-_School_Record_Book_.xlsx')
-print(dataframe)
+student_records_df = pd.read_excel('./Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='Student Records')
+print(student_records_df)
+teacher_records_df = pd.read_excel('./Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='Teacher Records')
+print(teacher_records_df)
+infected_student_list = pd.read_excel('./Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='ZBY1 Status')
+print(infected_student_list)
+
+infected_student_information = student_records_df.loc[student_records_df['Student Number'].isin(infected_student_list['Student ID'])]
+
+print(infected_student_information)
