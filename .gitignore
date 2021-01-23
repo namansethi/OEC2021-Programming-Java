@@ -26,3 +26,6 @@
 
 # IntelliJ
 out/
+
+# Venv
+venv/

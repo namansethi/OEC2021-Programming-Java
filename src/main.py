@@ -56,3 +56,4 @@ if __name__ == '__main__':
 
     #get the lisat of students in Art A
     period_one_artA = student_record_table.loc[student_record_table['Period 1 Class'] == 'Art B']
+
