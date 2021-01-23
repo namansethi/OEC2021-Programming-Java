@@ -4,28 +4,24 @@ import numpy as np
 
 def get_student_records():
     student_records_df_raw = pd.read_excel('./Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='Student Records')
-    print(student_records_df_raw)
 
     return student_records_df_raw
 
 
 def get_teacher_records():
     teacher_records_df_raw = pd.read_excel('./Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='Teacher Records')
-    print(teacher_records_df_raw)
 
     return  teacher_records_df_raw
 
 
 def get_ta_records():
     ta_records_df_raw = pd.read_excel('./Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='Teaching Assistant Records')
-    print(ta_records_df_raw)
 
     return ta_records_df_raw
 
 
 def get_infected_status():
     infected_status_df_raw = pd.read_excel('./Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='ZBY1 Status')
-    print(infected_status_df_raw)
 
     infected_status_df_raw['Person Type'] = np.nan
     if 'Student ID' in infected_status_df_raw.columns:
@@ -36,7 +32,6 @@ def get_infected_status():
     infected_status_df_raw.loc[infected_status_df_raw['Student ID'].isnull(), 'Person Type'] = 'Teaching Assistant'
 
     infected_status_df_ret = infected_status_df_raw
-    print(infected_status_df_ret)
     return infected_status_df_ret
 
 
