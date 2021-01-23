@@ -68,14 +68,16 @@ def assignClassInfectionRates(period, className):
     multiplied_list = [(element / 100) * (3 / num) for element in col_one_list]
     grade12infect = calc_infect_rate(multiplied_list)
 
+
+
     if (teacher.empty):
         teachInfect = 0
     else:
-        teachInfect = int(teacher['Infection Rate'])
+        teachInfect = int(teacher['Infection Rate'])/100
     if (ta.empty):
         TaInfect = 0
     else:
-        TaInfect = int(ta['Infection Rate'])
+        TaInfect = int(ta['Infection Rate'])/100
 
 
 
@@ -164,13 +166,15 @@ def assignClassInfectionRates(period, className):
                     infection = 1
                 else:
                     infection = 1 - (1 - infection) * (1 - infect)
-        infection = 1 - (1 - infection) * (1 - 3 / num * teachInfect * 0.2)
-        infection = 1 - (1 - infection) * (1 - 3 / num * TaInfect * 0.2)
 
+
+
+        infection = 1 - ((1 - infection) * (1 - 3 / num * teachInfect))*0.80
+        infection = 1 - ((1 - infection) * (1 - 3 / num * TaInfect))*0.80
         # note working need to be changed
 
 
-        print(infection)
+
 
         studentRecords.loc[studentRecords['Student Number'] == studNum, 'Infection Rate'] = infection*100
 
@@ -202,7 +206,7 @@ def assignClassInfectionRates(period, className):
     pass
     #TODO where RHYS's code goes
 
-    pass
+
 
 def calc_infect_rate(list_of_rates):
     intermediate_rate = 1
