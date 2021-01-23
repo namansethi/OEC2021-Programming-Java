@@ -1,12 +1,13 @@
+from main import *
 import pandas as pd
 import numpy as np
 
 # Import file with data loading functions
 
-studentRecords = pd.read_excel('../Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='Student Records')
-teacherRecords = pd.read_excel('../Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='Teacher Records')
-taRecords = pd.read_excel('../Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='Teaching Assistant Records')
-infectedStudents = pd.read_excel('../Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='ZBY1 Status')
+studentRecords = get_student_records()
+teacherRecords = get_teacher_records()
+taRecords = get_ta_records()
+infectedStudents = get_infected_status()
 
 
 def addInfectionColumn(dataframe):
@@ -17,14 +18,29 @@ def addInfectionColumn(dataframe):
 def initializeTransmissionRates():
     studentRecords.dropna()
     infected_student_numbers = studentRecords.loc[studentRecords['Student Number'].isin(infectedStudents['Student ID'])]
-    studentRecords['Infection Rate'] = studentRecords['Student Number'].apply(lambda x: 100 if x in infected_student_numbers['Student Number'].values else 0)
-    print(studentRecords.to_string())
+    studentRecords['Infection Rate'] = studentRecords['Student Number'].apply(
+        lambda x: 100 if x in infected_student_numbers['Student Number'].values else 0)
+    pass
+
+
+def assignClassInfectionRates(period, classname):
+
+    #TODO where RHYS's code goes
+
     pass
 
 
 def startProgram():
     addInfectionColumn(studentRecords)
+    addInfectionColumn(teacherRecords)
+    addInfectionColumn(taRecords)
     initializeTransmissionRates()
+
+    for x in range(1, 5):
+        uniqueClasses = studentRecords['Period {} Class'.format(x)].unique()
+        for y in uniqueClasses:
+            assignClassInfectionRates(x, y)
+
     pass
 
 
