@@ -243,19 +243,21 @@ def assignLunchInfectionRates():
                 infection = row['Infection Rate']/100
 
 
+
+
                 if isinstance(healthcondition, str):
 
 
                     healthcondition = 'true'
 
                 if(healthcondition):
-                    calculatedBaseRate = calculatedBaseRate*1.7
+                    calculatedBaseRate = calculatedBaseRate*1.7/100
                     if(calculatedBaseRate >= 1):
                         infection = 1
                     else:
-                        infection = 1 - (1 - infection)*(1-calculatedBaseRate)
+                        infection = 1 - (1 - infection)*(1-calculatedBaseRate/100)
                 else:
-                    infection = 1 - (1 - infection)*(1-calculatedBaseRate)
+                    infection = 1 - (1 - infection)*(1-calculatedBaseRate/100)
 
                 studentRecords.loc[studentRecords['Student Number'] == Id, 'Infection Rate'] = infection*100
 
@@ -281,8 +283,8 @@ def startProgram():
     initializeTransmissionRates()
 
     for periodNumber in range(1, numPeriods + 1):
-        #if periodNumber is 3:
-            #assignLunchInfectionRates()
+        if periodNumber == 3:
+            assignLunchInfectionRates()
         uniqueClasses = studentRecords['Period {} Class'.format(periodNumber)].unique()
         for uniqueClass in uniqueClasses:
             assignClassInfectionRates('Period {} Class'.format(periodNumber), uniqueClass)
