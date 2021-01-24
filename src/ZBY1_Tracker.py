@@ -283,7 +283,7 @@ def startProgram():
     initializeTransmissionRates()
 
     for periodNumber in range(1, numPeriods + 1):
-        if periodNumber is 3:
+        if periodNumber == 3:
             assignLunchInfectionRates()
         uniqueClasses = studentRecords['Period {} Class'.format(periodNumber)].unique()
         for uniqueClass in uniqueClasses:
