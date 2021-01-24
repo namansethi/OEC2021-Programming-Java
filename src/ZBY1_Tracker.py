@@ -288,6 +288,8 @@ def startProgram():
             assignClassInfectionRates('Period {} Class'.format(periodNumber), uniqueClass)
     print(studentRecords.to_string())
     studentRecords.to_excel("./Resources/StudentRecordsWithInfections.xlsx")
+    teacherRecords.to_excel("./Resources/TeacherRecordsWithInfections.xlsx")
+    taRecords.to_excel("./Resources/TARecordsWithInfections.xlsx")
     pass
 
 
