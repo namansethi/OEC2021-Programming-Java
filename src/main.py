@@ -4,9 +4,17 @@ import numpy as np
 
 def get_student_records():
     student_records_df_raw = pd.read_excel('./Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='Student Records')
+    student_records_df_raw = student_records_df_raw.iloc[:580]
+    student_records_df_raw['Extracurricular Activities'] = student_records_df_raw['Extracurricular Activities'].apply(lambda x: parse_extracurricular_activities(x))
 
-    return student_records_df_raw
+    student_records_df_ret = student_records_df_raw
+    return student_records_df_ret
 
+
+def parse_extracurricular_activities(activ):
+    if activ != 'NaN':
+        return str(activ).split(',')[0]
+    return activ
 
 def get_teacher_records():
     teacher_records_df_raw = pd.read_excel('./Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='Teacher Records')
