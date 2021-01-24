@@ -3,7 +3,7 @@ import numpy as np
 
 
 def get_student_records():
-    student_records_df_raw = pd.readexcel('./Resources/OEC2021-_School_RecordBook.xlsx', sheet_name='Student Records')
+    student_records_df_raw = pd.read_excel('./Resources/OEC2021_-_School_Record_Book_.xlsx', sheet_name='Student Records')
     student_records_df_raw = student_records_df_raw.iloc[:580]
     student_records_df_raw['Extracurricular Activities'] = student_records_df_raw['Extracurricular Activities'].apply(lambda x: parse_extracurricular_activities(x))
 

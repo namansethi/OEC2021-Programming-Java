@@ -96,7 +96,7 @@ def assignClassInfectionRates(period, className):
         healthcondition = row['Health Conditions']
         infection = row['Infection Rate']/100
 
-        if (healthcondition != 'nan'):
+        if isinstance(healthcondition, str):
             healthcondition = 'true'
 
         if (infection == 1):
@@ -182,7 +182,7 @@ def assignClassInfectionRates(period, className):
 
 
 
-        studentRecords.loc[studentRecords['Student Number'] == studNum, 'Infection Rate'] = infection*100
+        studentRecords.loc[studentRecords['Student Number'] == studNum, 'Infection Rate'] = infection
 
 
     if(teacher.empty):
@@ -194,7 +194,7 @@ def assignClassInfectionRates(period, className):
         infection = (1- (1-infection)*(1-calc_infect_rate(list))) * 0.2
         infection = 1 - (1 - infection) * (1 - 3 / num * TaInfect )
 
-        teacherRecords.loc[teacherRecords['Teacher Number'] == teaching.iloc[0], 'Infection Rate'] = infection*100
+        teacherRecords.loc[teacherRecords['Teacher Number'] == teaching.iloc[0], 'Infection Rate'] = infection
 
     if(ta.empty):
         infection = 0
@@ -204,7 +204,7 @@ def assignClassInfectionRates(period, className):
         list = [grade9infect, grade10infect, grade11infect, grade12infect]
         infection = (1 - (1 - infection) * (1 - calc_infect_rate(list))) * 0.2
         infection = 1 - (1 - infection) * (1 - 3 / num * teachInfect)
-        taRecords.loc[taRecords['First Name'] == teaching.iloc[0], 'Infection Rate'] = infection * 100
+        taRecords.loc[taRecords['First Name'] == teaching.iloc[0], 'Infection Rate'] = infection
 
     #print(infected)
    # print(grad10)
@@ -267,7 +267,12 @@ def assignLunchInfectionRates():
 
 pass
 
+def calc_infect_rate(list_of_rates):
+    intermediate_rate = 1
+    for rate in list_of_rates:
+        intermediate_rate = intermediate_rate * (1 - rate)
 
+    return 1 - intermediate_rate
 
 def startProgram():
     addInfectionColumn(studentRecords)
@@ -276,11 +281,11 @@ def startProgram():
     initializeTransmissionRates()
 
     for periodNumber in range(1, numPeriods + 1):
-        if periodNumber is 3:
-            assignLunchInfectionRates()
+        #if periodNumber is 3:
+            #assignLunchInfectionRates()
         uniqueClasses = studentRecords['Period {} Class'.format(periodNumber)].unique()
         for uniqueClass in uniqueClasses:
-            assignClassInfectionRates(periodNumber, uniqueClass)
+            assignClassInfectionRates('Period {} Class'.format(periodNumber), uniqueClass)
     print(studentRecords.to_string())
     studentRecords.to_excel("./Resources/StudentRecordsWithInfections.xlsx")
     pass
