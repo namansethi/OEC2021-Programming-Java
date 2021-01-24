@@ -62,8 +62,31 @@ def assignLunchInfectionRates():
                 percentageCorrected.append(percentage/100)
             calculatedBaseRate = calculateBaseRateInfection(percentageCorrected)
 
-            group['Infection Rate'] = group.apply(
-                lambda x: x['Infection Rate']*calculatedBaseRate, axis=1)
+            for index, row in group.iterrows():
+                Id = row['Student Number']
+                healthcondition = row['Health Conditions']
+
+                infection = row['Infection Rate']/100
+
+
+                if isinstance(healthcondition, str):
+
+
+                    healthcondition = 'true'
+
+                if(healthcondition):
+                    calculatedBaseRate = calculatedBaseRate*1.7
+                    if(calculatedBaseRate >= 1):
+                        infection = 1
+                    else:
+                        infection = 1 - (1 - infection)*(1-calculatedBaseRate)
+                else:
+                    infection = 1 - (1 - infection)*(1-calculatedBaseRate)
+
+                studentRecords.loc[studentRecords['Student Number'] == Id, 'Infection Rate'] = infection*100
+
+           # group['Infection Rate'] = group['Infection Rate'].apply(
+             #   lambda x: x['Infection Rate']*calculatedBaseRate, axis=1)
 
             #Apply health conditions
             #group = group.apply( lambda x: x['Infection Rate']*1.7 if x['Health Conditions'] is not np.NaN else x['Infection Rate']*1,axis=1)
@@ -83,7 +106,8 @@ def startProgram():
         uniqueClasses = studentRecords['Period {} Class'.format(periodNumber)].unique()
         for uniqueClass in uniqueClasses:
             assignClassInfectionRates(periodNumber, uniqueClass)
-
+    print(studentRecords.to_string())
+    studentRecords.to_excel("./Resources/StudentRecordsWithInfections.xlsx")
     pass
 
 
